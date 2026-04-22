@@ -38,8 +38,29 @@ def agenda():
     cursor.execute("SELECT * FROM pacientes")
     pacientes = cursor.fetchall()
     
-    return render_template("index.html", pacientes = pacientes)
+    return render_template("index.html", citas = pacientes)
 
+# Para agendar o crear una cita
+@app.route('/agendar', methods=('GET', 'POST'))
+def agendar():
+    if request.method == 'POST':
+        # Obtenemos los datos del formulario
+        mascota = request.form['mascota']
+        propietario = request.form['propietario']
+        especie = request.form['especie']
+        fecha = request.form['fecha']
+        #Nos conectamos a la base de datos
+        conn = sqlite3.connect('citas.db')
+        cursor = conn.cursor()
+        # Insertamos en la base de datos
+        cursor.execute("""
+            INSERT INTO pacientes (mascota, propietario, especie, fecha) VALUES (?, ?, ?, ?)
+        """, (mascota, propietario, especie, fecha))
+        conn.commit()
+        conn.close()
+        # redirigimos a la raiz
+        return redirect("/")
+    return render_template('agendar.html')
 
 
 # @app.route("/create")
