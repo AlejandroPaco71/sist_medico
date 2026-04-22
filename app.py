@@ -91,7 +91,17 @@ def modificar(id):
     # Renderiza el formulario de edición con la información de la cita seleccionada
     return render_template('modificar.html', cita=cita)
 
-
+# Para la cancelacion de una cita
+@app.route('/cancelar/<int:id>')
+def cancelar(id):
+    conn = sqlite3.connect("citas.db")
+    cursor = conn.cursor()
+    # Ejecuatmos la sentencia con cursor para la eliminacin de la cita
+    cursor.execute("DELETE FROM pacientes WHERE id=?",(id,))
+    conn.commit()
+    conn.close()
+    # Regresa a la vista de mis citas
+    return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)
