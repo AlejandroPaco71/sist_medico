@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for cita in citas %}
+    <div class="card">
+        <h5 class="card-header">CITA</h5>
+        <div class="card-body">
+            <h5 class="card-title">Propietario: {{ cita.ropietario}}</h5>
+            <h5 class="card-title">Nombre de mascota: {{ cita.mascota}}</h5>
+            <h5 class="card-title">Especie: {{ cita.especie }}</h5>
+            <h5 class="card-title">Programado para el: {{ cita.fecha }}</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+{% else %}
+<h1>No hay citas programadas</h1>
+{% endfor %}
+{% endblock %}
