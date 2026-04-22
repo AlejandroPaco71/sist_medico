@@ -5,24 +5,24 @@
 
 
 
-    {% for cita in citas %}
+    {% for paciente in pacientes %}
     <div class="col-md-4 mb-3">
         <div class="card shadow-sm">
             <h5 class="card-header">CITA Nro. {{ loop.index }}</h5>
             <div class="card-body">
-                <h5 class="card-title"><strong>Propietario:</strong> {{ cita.propietario}}</h5>
-                <h5 class="card-title"><strong>Nombre de mascota:</strong> {{ cita.mascota}}</h5>
-                <h5 class="card-title"><strong>Especie:</strong> {{ cita.especie }}</h5>
-                <h5 class="card-title"><strong>Programado para el:</strong> {{ cita.fecha }}</h5> <br>
+                <h5 class="card-title"><strong>Propietario:</strong> {{ paciente.propietario}}</h5>
+                <h5 class="card-title"><strong>Nombre de mascota:</strong> {{ paciente.mascota}}</h5>
+                <h5 class="card-title"><strong>Especie:</strong> {{ paciente.especie }}</h5>
+                <h5 class="card-title"><strong>Programado para el:</strong> {{ paciente.fecha }}</h5> <br>
 
 
-                <a href="/modificar/{{ cita.id }}" class="btn btn-sm btn-warning">Editar</a>
-                <a href="/cancelar/{{ cita.id }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar cita?')">Cancelar</a>
+                <a href="/modificar/{{ paciente.id }}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="/cancelar/{{ paciente.id }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar paciente?')">Cancelar</a>
             </div>
         </div>
     </div>
     {% else %}
-    <h1>No hay citas programadas</h1>
+    <h1>No hay pacientes programadas</h1>
     {% endfor %}
 </div>
 {% endblock %}

@@ -38,7 +38,7 @@ def agenda():
     cursor.execute("SELECT * FROM pacientes")
     pacientes = cursor.fetchall()
     
-    return render_template("index.html", citas = pacientes)
+    return render_template("index.html", pacientes = pacientes)
 
 # Para agendar o crear una cita
 @app.route('/agendar', methods=('GET', 'POST'))
@@ -63,61 +63,35 @@ def agendar():
     return render_template('agendar.html')
 
 
-# @app.route("/create")
-# def create():
-#     return render_template('create.html')
+# Para la modificacion de una cita
+@app.route('/modificar/<int:id>', methods=('GET', 'POST'))
+def modificar(id):
+    # Obtenmos los datos de la cita
+    conn = sqlite3.connect('citas.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM pacientes WHERE id = ?', (id,))
+    cita = cursor.fetchone()
 
-# @app.route("/save", methods=['POST'])
-# def save():
-#     mascota = request.form['mascota']
-#     propietario = request.form['propietario']
-#     especie TEXTquest.form['especie'] 
-#     conn = sqlite3.connect("kardex.db")
-#     cursor = conn.cursor()
-#     cursor.execute(
-#         """
-#         INSERT INTO pacientes (mascota,propietario,especiTEXT     VALUES (?,?,?)
-#         """,
-#         (mascota,propietario,especiTEXT )
-#     conn.commit()
-#     conn.close()
-#     return redirect('/')
+    if request.method == 'POST':
+        #obtenemos los datos del formulario
+        mascota = request.form['mascota']
+        propietario = request.form['propietario']
+        especie = request.form['especie']
+        fecha = request.form['fecha']
+        # Ejecución de la actualización (UPDATE) con los nuevos valores
+        conn.execute("""
+            UPDATE pacientes SET mascota= ?, propietario=?, especie=?, fecha = ? WHERE id = ?
+        """, (mascota, propietario, especie, fecha, id))
+        conn.commit()
+        conn.close()
+        return redirect("/")
+
+    conn.close()
+    # Renderiza el formulario de edición con la información de la cita seleccionada
+    return render_template('modificar.html', cita=cita)
 
 
-# @app.route("/edit/<int:id>")
-# def persona_edit(id):
-#     #conexion a la base de datos 
-#     conn = sqlite3.connect("kardex.db")
-#     #Permite manejar lo sregistros en forma de diccionario
-#     conn.row_factory = sqlite3.Row
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT * FROM pacientes WHERE id = ?", (id,))
-#     persona = cursor.fetchone()
-#     conn.close()
-#     return render_template('edit.html', persona = persona)
-
-# @app.route("/update", methods=['POST'])
-# def persona_update():
-#     id = request.form['id']
-#     mascota = request.form['mascota']
-#     propietario = request.form['propietario']
-#     especie TEXTquest.form['especie'TEXT   #conexion a la base de datos 
-#     conn = sqlite3.connect("kardex.db")
-#     cursor = conn.cursor()
-    
-#     cursor.execute("UPDATE pacientes SET mascota=?,propietario=?,especie=TEXTERE id=?", (mascota,propietario,especie,TEXT
-#     conn.commit()
-#     conn.close()
-#     return redirect('/')
-
-# @app.route("/delete/<int:id>")
-# def persona_delete(id):
-#     conn = sqlite3.connect("kardex.db")
-#     cursor = conn.cursor()
-#     cursor.execute("DELETE FROM pacientes WHERE id=?", (id,))
-#     conn.commit()
-#     conn.close()
-#     return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)
